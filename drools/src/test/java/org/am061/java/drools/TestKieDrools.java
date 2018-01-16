@@ -28,7 +28,7 @@ public class TestKieDrools {
 
     @AfterClass
     public static void afterClass() {
-        kSession.destroy();
+        kSession.dispose();
     }
 
     @Test
