@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <drools.version>6.2.0.Final</drools.version>
+        <drools.version>7.5.0.Final</drools.version>
     </properties>
 
     <name>Drools</name>
