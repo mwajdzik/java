@@ -1,5 +1,6 @@
 package org.am061.java.drools;
 
+import com.google.common.base.Stopwatch;
 import org.am061.java.drools.model.Product;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -15,9 +16,12 @@ import static org.junit.Assert.assertNotNull;
 public class TestKieDrools {
 
     private static KieSession kSession;
+    private static Stopwatch stopwatch = Stopwatch.createUnstarted();
 
     @BeforeClass
     public static void beforeClass() {
+        stopwatch.start();
+
         KieServices ks = KieServices.Factory.get();
         KieContainer kContainer = ks.getKieClasspathContainer();
 
@@ -29,6 +33,9 @@ public class TestKieDrools {
     @AfterClass
     public static void afterClass() {
         kSession.dispose();
+
+        stopwatch.stop();
+        System.out.println("Time elapsed: " + stopwatch);
     }
 
     @Test
