@@ -22,12 +22,12 @@ public class TestKieDrools {
     public static void beforeClass() {
         stopwatch.start();
 
-        KieServices ks = KieServices.Factory.get();
-        KieContainer kContainer = ks.getKieClasspathContainer();
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
 
         // Get the session named kseesion-rule that we defined in kmodule.xml
         // by default the session returned is always stateful.
-        kSession = kContainer.newKieSession("ksession-rule");
+        kSession = kieContainer.newKieSession("ksession-rule");
     }
 
     @AfterClass
