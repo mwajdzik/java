@@ -2,20 +2,24 @@ package org.am061.java.drools;
 
 import com.google.common.base.Stopwatch;
 import org.am061.java.drools.model.Product;
+import org.drools.core.io.impl.ClassPathResource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kie.api.KieBase;
 import org.kie.api.KieServices;
+import org.kie.api.builder.KieBuilder;
+import org.kie.api.builder.KieFileSystem;
 import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.StatelessKieSession;
+
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-public class TestKieDrools {
+public class FileSystemDroolsTest {
 
-    private static KieSession kSession;
+    private static StatelessKieSession kSession;
     private static Stopwatch stopwatch = Stopwatch.createUnstarted();
 
     @BeforeClass
@@ -23,17 +27,20 @@ public class TestKieDrools {
         stopwatch.start();
 
         KieServices kieServices = KieServices.Factory.get();
-        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+        KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
+        kieFileSystem.write("src/main/resources/normal_RULE.drl", new ClassPathResource("rules/rules.drl"));
 
-        // Get the session named kseesion-rule that we defined in kmodule.xml
-        // by default the session returned is always stateful.
-        kSession = kieContainer.newKieSession("ksession-rule");
+        KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
+        kieBuilder.buildAll();
+
+        KieContainer kieContainer = kieServices.newKieContainer(kieServices.getRepository().getDefaultReleaseId());
+        KieBase kieBase = kieContainer.getKieBase();
+
+        kSession = kieBase.newStatelessKieSession();
     }
 
     @AfterClass
     public static void afterClass() {
-        kSession.dispose();
-
         stopwatch.stop();
         System.out.println("Time elapsed: " + stopwatch);
     }
@@ -46,24 +53,12 @@ public class TestKieDrools {
         Product p4 = new Product("copper");
         Product p5 = new Product("platinum");
 
-        FactHandle fact1 = kSession.insert(p1);
-        FactHandle fact2 = kSession.insert(p2);
-        FactHandle fact3 = kSession.insert(p3);
-        FactHandle fact4 = kSession.insert(p4);
-        FactHandle fact5 = kSession.insert(p5);
-
-        assertNotNull(fact1);
-        assertNotNull(fact2);
-        assertNotNull(fact3);
-        assertNotNull(fact4);
-        assertNotNull(fact5);
-
-        kSession.fireAllRules();
+        kSession.execute(Arrays.asList(p1, p2, p3, p4, p5));
 
         assertEquals(p1.getDiscount(), 25);
-        assertEquals(p2.getDiscount(), 50);
+        assertEquals(p2.getDiscount(), 0);
         assertEquals(p3.getDiscount(), 15);
-        assertEquals(p4.getDiscount(), 45);
+        assertEquals(p4.getDiscount(), 0);
         assertEquals(p5.getDiscount(), 0);
     }
 }
