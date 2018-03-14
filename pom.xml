@@ -17,6 +17,7 @@
         <module>guava</module>
         <module>jackson</module>
         <module>camel</module>
+        <module>vavr</module>
     </modules>
 
     <parent>
@@ -47,6 +48,12 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+		<dependency>
+		    <groupId>io.vavr</groupId>
+		    <artifactId>vavr</artifactId>
+		    <version>0.9.2</version>
+		</dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
