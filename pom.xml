@@ -18,6 +18,7 @@
         <module>jackson</module>
         <module>camel</module>
         <module>vavr</module>
+        <module>rxjava</module>
     </modules>
 
     <parent>
