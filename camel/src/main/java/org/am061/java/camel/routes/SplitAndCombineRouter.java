@@ -29,18 +29,28 @@ class SplitAndCombineRouter extends RouteBuilder {
         from("direct:test-input")
                 .log(WARN, "Starting...")
                 .split()
-                    .method(jobSplitterIteratorFactory)
-                    .aggregationStrategy(new JobSplitterAggregator())
-                    .stopOnException().streaming()
-                    .process(exchange -> {
-                        LocalDate date = exchange.getIn().getBody(JobDefinition.class).getStartDate();
-                        log.info("Processing {}", date);
+                /**/.method(jobSplitterIteratorFactory)
+                /**/.aggregationStrategy(new JobSplitterAggregator())
 
-                        if (date.toString().equals("2018-01-04")) {
-                            throw new RuntimeException("Error thrown on " + date);
-                        }
-                    })
+                /**/.stopOnException()
+                /**/.streaming()
+                /**/.parallelProcessing().threads(2)
+                /*----*/.process(exchange -> {
+                            LocalDate date = exchange.getIn().getBody(JobDefinition.class).getStartDate();
+
+                            log.info("Processing {} started", date);
+                            Thread.sleep(250);
+
+                            // if (date.toString().equals("2018-01-04")) {
+                            //   throw new RuntimeException("Error thrown on " + date);
+                            // }
+
+                            log.info("Processing {} finished", date);
+                        })
+                /**/.end()
+                /**/.log(INFO, "End of parallel processing")
                 .end()
+                .log(INFO, "End of split")
                 .log(INFO, "SHOULD BE CALLED ONCE AT THE END")
                 .end();
     }
