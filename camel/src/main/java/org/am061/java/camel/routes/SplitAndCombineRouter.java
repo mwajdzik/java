@@ -2,11 +2,14 @@ package org.am061.java.camel.routes;
 
 import lombok.extern.slf4j.Slf4j;
 import org.am061.java.camel.model.JobDefinition;
+import org.am061.java.camel.services.ErrorHandler;
 import org.am061.java.camel.services.JobSplitterAggregator;
 import org.am061.java.camel.services.JobSplitterIteratorFactory;
+import org.am061.java.camel.services.SimpleInputService;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.time.LocalDate;
 
 import static org.apache.camel.LoggingLevel.ERROR;
@@ -19,11 +22,15 @@ class SplitAndCombineRouter extends RouteBuilder {
 
     private JobSplitterIteratorFactory jobSplitterIteratorFactory = new JobSplitterIteratorFactory();
 
+    @Resource private SimpleInputService simpleInputService;
+    @Resource private ErrorHandler errorHandler;
+
     @Override
     public void configure() {
         onException(RuntimeException.class)
                 .handled(true)
                 .log(ERROR, "ERROR action goes here")
+                .bean(errorHandler)
                 .end();
 
         from("direct:test-input")
@@ -47,6 +54,7 @@ class SplitAndCombineRouter extends RouteBuilder {
 
                             log.info("Processing {} finished", date);
                         })
+                /*----*/.bean(simpleInputService)
                 /**/.end()
                 /**/.log(INFO, "End of parallel processing")
                 .end()
