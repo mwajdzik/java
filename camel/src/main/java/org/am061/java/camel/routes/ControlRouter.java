@@ -19,6 +19,11 @@ class ControlRouter extends RouteBuilder {
                 .split(body().tokenize())
                 /**/.process(new MyProcessor())
                 /**/.bean(new MyBean())
+                /**/.pipeline("direct:pipeline_1", "direct:pipeline_2")
+                /**/.multicast()
+                /*----*/.parallelProcessing()
+                /*----*/.to("direct:multicast_1", "direct:multicast_2")             // the order can change (parallel)
+                /**/.end()
                 /**/.choice()                                                       // Content Based Router
                 /*----*/.when(e -> e.getIn().getBody(Integer.class) < 25)
                 /*--------*/.to("direct:a")
@@ -39,6 +44,18 @@ class ControlRouter extends RouteBuilder {
 
         from("direct:c")
                 .log("More than 100");
+
+        from("direct:multicast_1")
+                .log("From multicast_1");
+
+        from("direct:multicast_2")
+                .log("From multicast_2");
+
+        from("direct:pipeline_1")
+                .log("From pipeline_1");
+
+        from("direct:pipeline_2")
+                .log("From pipeline_2");
     }
 
     public static class MyProcessor implements Processor {
