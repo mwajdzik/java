@@ -1,5 +1,6 @@
 package org.am061.java.camel.routes;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
 import org.apache.camel.Handler;
@@ -12,9 +13,12 @@ import org.springframework.stereotype.Component;
 @Component
 class ControlRouter extends RouteBuilder {
 
+    @Setter private String fromUri = "file:///tmp/camel2";
+    @Setter private String toUri = "log:org.am061.java.camel.routes";
+
     @Override
     public void configure() {
-        from("file:///tmp/camel2")
+        from(fromUri)
                 .log(LoggingLevel.ERROR, "START")
                 .split(body().tokenize())
                 /**/.process(new MyProcessor())
@@ -34,7 +38,8 @@ class ControlRouter extends RouteBuilder {
                 /*----*/.end()
                 /**/.process(new MyProcessor())
                 .end()
-                .log(LoggingLevel.ERROR, "DONE");
+                .log(LoggingLevel.ERROR, "DONE")
+                .to(toUri);
 
         from("direct:a")
                 .log("Less than 25");
