@@ -20,6 +20,7 @@
         <module>camel</module>
         <module>vavr</module>
         <module>rxjava</module>
+        <module>concurrency</module>
     </modules>
 
     <parent>
