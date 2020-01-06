@@ -26,4 +26,13 @@ Non-blocking lock/acquire method for mutex.
 ### Read-write lock
 Use when there are much more reading than writing threads.
 
+### Deadlock
+
+### Starvation
+A process or thread is perpetually denied the resource it needs.
+
+### Livelock
+Multiple threads or processes are actively responding to each other to resolve conflict, but that prevents them from making progress.
+
+ 
 

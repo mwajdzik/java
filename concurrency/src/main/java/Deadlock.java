@@ -26,10 +26,10 @@ public class Deadlock {
         Philosopher p2 = new Philosopher("Madzia", fork2, fork3);
 
         // deadlock
-        // Philosopher p3 = new Philosopher("Kuba", fork3, fork1);
+        Philosopher p3 = new Philosopher("Kuba", fork3, fork1);
 
         // no deadlock
-        Philosopher p3 = new Philosopher("Kuba", fork1, fork3);
+        // Philosopher p3 = new Philosopher("Kuba", fork1, fork3);
 
         p1.start();
         p2.start();
@@ -53,17 +53,28 @@ class Philosopher extends Thread {
 
     @Override
     public void run() {
+        int mealsEaten = 0;
+
         while (Deadlock.mealCount > 0) {
             firstFork.lock();
             secondFork.lock();
 
-            if (Deadlock.mealCount > 0) {
-                Deadlock.mealCount--;
-                System.out.println(this.getName() + " took a piece! Remaining: " + Deadlock.mealCount);
+            try {
+                if (Deadlock.mealCount > 0) {
+                    Deadlock.mealCount--;
+                    mealsEaten++;
+                    System.out.println(this.getName() + " took a piece! Remaining: " + Deadlock.mealCount);
+                }
+
+                if (Deadlock.mealCount == 100) {
+                    System.out.println(1 / 0);
+                }
+            } finally {
+                secondFork.unlock();
+                firstFork.unlock();
             }
 
-            secondFork.unlock();
-            firstFork.unlock();
+            System.out.println(this.getName() + " took " + mealsEaten);
         }
     }
 }
