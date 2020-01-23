@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import static org.am061.java.concurrency.ReadWriteMutexDemo.*;
+import static org.am061.java.concurrency.ReadWriteMutex.*;
 
-public class ReadWriteMutexDemo {
+public class ReadWriteMutex {
 
     static ReentrantReadWriteLock marker = new ReentrantReadWriteLock();
     static Lock readMarker = marker.readLock();
@@ -65,10 +65,10 @@ class Writer extends Thread {
     @SneakyThrows
     public void run() {
         for (int i = 0; i < 200; i++) {
-            ReadWriteMutexDemo.writeMarker.lock();
+            ReadWriteMutex.writeMarker.lock();
             System.out.println("\n>>> Writer in action <<<\n");
             value++;
-            ReadWriteMutexDemo.writeMarker.unlock();
+            ReadWriteMutex.writeMarker.unlock();
 
             sleep(5);
         }

@@ -1,3 +1,5 @@
+package org.am061.java.concurrency;
+
 import lombok.SneakyThrows;
 
 import java.util.concurrent.locks.Lock;
@@ -29,7 +31,7 @@ public class Deadlock {
         Philosopher p3 = new Philosopher("Kuba", fork3, fork1);
 
         // no deadlock
-        // Philosopher p3 = new Philosopher("Kuba", fork1, fork3);
+        // org.am061.java.concurrency.Philosopher p3 = new org.am061.java.concurrency.Philosopher("Kuba", fork1, fork3);
 
         p1.start();
         p2.start();

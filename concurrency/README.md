@@ -13,7 +13,7 @@ Mechanism to implement mutual exclusion. Only one thread or process can possess 
 Execute as a single action, relative to other threads.
 Cannot be interrupted by other concurrent threads.
 
-### Deadlock
+### org.am061.java.concurrency.Deadlock
 All processes and threads are unable to continue executing.
 
 ### Reentrant Mutex (Recursive Mutex/Lock)
@@ -26,7 +26,7 @@ Non-blocking lock/acquire method for mutex.
 ### Read-write lock
 Use when there are much more reading than writing threads.
 
-### Deadlock
+### org.am061.java.concurrency.Deadlock
 
 ### Starvation
 A process or thread is perpetually denied the resource it needs.

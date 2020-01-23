@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class MutexDemo {
+public class Mutex {
 
     @SneakyThrows
     public static void main(String[] args) {
