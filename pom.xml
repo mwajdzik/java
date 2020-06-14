@@ -21,6 +21,7 @@
         <module>vavr</module>
         <module>rxjava</module>
         <module>concurrency</module>
+        <module>kafka</module>
     </modules>
 
     <parent>
