@@ -47,7 +47,8 @@ class Reader extends Thread {
     public void run() {
         for (int i = 0; i < 1_000; i++) {
             readMarker.lock();
-            System.out.println(this.getName() + " reads : " + value + "\t\tRead Lock Count: " + marker.getReadLockCount());
+            System.out.print(this.getName() + " reads : " + value);
+            System.out.println("\t\tRead Lock Count: " + marker.getReadLockCount());
             readMarker.unlock();
 
             sleep(1);
@@ -65,10 +66,10 @@ class Writer extends Thread {
     @SneakyThrows
     public void run() {
         for (int i = 0; i < 200; i++) {
-            ReadWriteMutex.writeMarker.lock();
+            writeMarker.lock();
             System.out.println("\n>>> Writer in action <<<\n");
             value++;
-            ReadWriteMutex.writeMarker.unlock();
+            writeMarker.unlock();
 
             sleep(5);
         }

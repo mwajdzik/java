@@ -45,7 +45,7 @@ public class Deadlock {
 
 class Philosopher extends Thread {
 
-    private Lock firstFork, secondFork;
+    private final Lock firstFork, secondFork;
 
     public Philosopher(String name, Lock firstFork, Lock secondFork) {
         super(name);

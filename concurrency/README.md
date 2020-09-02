@@ -1,10 +1,11 @@
 ### Data Race
-Problem that occurs when two or more concurrent threads access the same memory location and at least one thread is modifying it
-
+Problem that occurs when two or more concurrent threads access the same memory location and at least one thread is modifying it.
+Eg. two threads increasing a counter.
  
 ### Critical Section
 Code segment that accesses a shared resource.
 Keep protected sections of code as short as possible.
+Use: synchronized, or locks (eg. ReentrantLock).
 
 ### Mutex (Lock)
 Mechanism to implement mutual exclusion. Only one thread or process can possess at a time. Limits access to critical section.
@@ -13,7 +14,7 @@ Mechanism to implement mutual exclusion. Only one thread or process can possess 
 Execute as a single action, relative to other threads.
 Cannot be interrupted by other concurrent threads.
 
-### org.am061.java.concurrency.Deadlock
+### Deadlock
 All processes and threads are unable to continue executing.
 
 ### Reentrant Mutex (Recursive Mutex/Lock)
@@ -25,8 +26,6 @@ Non-blocking lock/acquire method for mutex.
 
 ### Read-write lock
 Use when there are much more reading than writing threads.
-
-### org.am061.java.concurrency.Deadlock
 
 ### Starvation
 A process or thread is perpetually denied the resource it needs.

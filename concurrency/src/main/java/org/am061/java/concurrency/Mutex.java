@@ -19,7 +19,8 @@ public class Mutex {
         th1.join();
         th2.join();
 
-        System.out.println(Shopper.counter);
+        System.out.println(Shopper.unsafeCounter);
+        System.out.println(Shopper.safeCounter);
         System.out.println(Shopper.atomicCounter.get());
         System.out.println(Shopper.synchronizedCounter);
         System.out.println((Shopper.tryCounter + th1.givingUpCounter + th2.givingUpCounter) + ", " +
@@ -29,7 +30,9 @@ public class Mutex {
 
 class Shopper extends Thread {
 
-    static int counter = 0;
+    static int unsafeCounter = 0;
+
+    static int safeCounter = 0;
     static Lock mutex = new ReentrantLock();
 
     static AtomicLong atomicCounter = new AtomicLong();
@@ -42,8 +45,10 @@ class Shopper extends Thread {
 
     public void run() {
         for (int i = 0; i < 1_000_000; i++) {
+            unsafeCounter++;
+
             mutex.lock();
-            counter++;
+            safeCounter++;
             mutex.unlock();
 
             atomicCounter.incrementAndGet();

@@ -32,6 +32,7 @@ public class ThreadLifecycle {
         logState(myThread);
 
         log("starting my thread");
+        myThread.setDaemon(false);
         myThread.start();
         logState(myThread);
 
